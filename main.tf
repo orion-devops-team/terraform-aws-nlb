@@ -55,12 +55,12 @@ resource "aws_security_group_rule" "tls_ingress" {
 
 module "access_logs" {
   source  = "cloudposse/lb-s3-bucket/aws"
-  version = "0.16.4"
+  version = "0.14.1"
 
   enabled = module.this.enabled && var.access_logs_enabled && var.access_logs_s3_bucket_id == null
 
-  allow_ssl_requests_only       = var.allow_ssl_requests_only
-  lifecycle_configuration_rules = var.lifecycle_configuration_rules
+  # allow_ssl_requests_only       = var.allow_ssl_requests_only
+  # lifecycle_configuration_rules = var.lifecycle_configuration_rules
   force_destroy                 = var.nlb_access_logs_s3_bucket_force_destroy
 
   ## Depricated variables --------------------------
