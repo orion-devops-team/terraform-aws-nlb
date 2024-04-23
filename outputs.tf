@@ -49,8 +49,3 @@ output "listener_arns" {
     concat(aws_lb_listener.default[*].arn, aws_lb_listener.tls[*].arn)
   )
 }
-
-output "access_logs_bucket_id" {
-  description = "The S3 bucket ID for access logs"
-  value       = module.access_logs.bucket_id
-}

@@ -53,29 +53,6 @@ resource "aws_security_group_rule" "tls_ingress" {
   security_group_id = one(aws_security_group.default[*].id)
 }
 
-module "access_logs" {
-  source  = "cloudposse/lb-s3-bucket/aws"
-  version = "0.14.1"
-
-  enabled = module.this.enabled && var.access_logs_enabled && var.access_logs_s3_bucket_id == null
-
-  # allow_ssl_requests_only       = var.allow_ssl_requests_only
-  # lifecycle_configuration_rules = var.lifecycle_configuration_rules
-  force_destroy                 = var.nlb_access_logs_s3_bucket_force_destroy
-
-  ## Depricated variables --------------------------
-  lifecycle_rule_enabled             = var.lifecycle_rule_enabled
-  enable_glacier_transition          = var.enable_glacier_transition
-  glacier_transition_days            = var.glacier_transition_days
-  expiration_days                    = var.expiration_days
-  noncurrent_version_expiration_days = var.noncurrent_version_expiration_days
-  noncurrent_version_transition_days = var.noncurrent_version_transition_days
-  standard_transition_days           = var.standard_transition_days
-  ##-----------------------------------------------
-
-  context = module.this.context
-}
-
 module "eip_label" {
   source     = "cloudposse/label/null"
   version    = "0.25.0"
@@ -134,7 +111,7 @@ resource "aws_lb" "default" {
   enable_deletion_protection       = var.deletion_protection_enabled
 
   access_logs {
-    bucket  = try(element(compact([var.access_logs_s3_bucket_id, module.access_logs.bucket_id]), 0), "")
+    bucket  = var.access_logs_s3_bucket_id
     prefix  = var.access_logs_prefix
     enabled = var.access_logs_enabled
   }

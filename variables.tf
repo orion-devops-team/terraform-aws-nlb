@@ -194,7 +194,7 @@ variable "allow_ssl_requests_only" {
 
 variable "access_logs_s3_bucket_id" {
   type        = string
-  default     = null
+  default     = ""
   description = "An external S3 Bucket name to store access logs in. If specified, no logging bucket will be created."
 }
 
@@ -268,12 +268,6 @@ variable "health_check_timeout" {
   type        = number
   default     = null
   description = "The amount of time, in seconds, during which no response means a failed health check"
-}
-
-variable "nlb_access_logs_s3_bucket_force_destroy" {
-  type        = bool
-  default     = false
-  description = "A boolean that indicates all objects should be deleted from the NLB access logs S3 bucket so that the bucket can be destroyed without error"
 }
 
 variable "lifecycle_configuration_rules" {
